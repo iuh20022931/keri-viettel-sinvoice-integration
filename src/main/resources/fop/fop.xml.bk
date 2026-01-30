@@ -1,0 +1,64 @@
+<fop version="1.0">
+   <!--Base URL for resolving relative URLs-->
+   <base>.</base>
+   <strict-validation>false</strict-validation>
+   <!--Source resolution in dpi (dots/pixels per inch) for determining the size of pixels in SVG and bitmap images, default: 72dpi-->
+   <source-resolution>72</source-resolution>
+   <!--Target resolution in dpi (dots/pixels per inch) for specifying the target resolution for generated bitmaps, default: 72dpi-->
+   <target-resolution>72</target-resolution>
+   <!--Default page-height and page-width, in case value is specified as auto-->
+   <default-page-settings height="11.00in" width="8.50in"/>
+   <!--Information for specific renderers-->
+   <!--Uses renderer mime type for renderers-->
+   <renderers>
+      <renderer mime="application/pdf">
+        <filterList>
+            <!--provides compression using zlib flate (default is on)-->
+            <value>flate</value>
+        </filterList>
+        <fonts>
+			<!--<font metrics-url="file:/u01/hddt/EInvoiceGW/fop/arial.xml" kerning="yes" embed-url="file:/u01/hddt/EInvoiceGW/fop/arial.ttf">-->
+			<!--<font metrics-url="file:D:\D\Projects\BU BSS\QT01_15042_EInvoice\12.REFERENCE\Full Code xmlToHtmlPdf\xml2pdf\fop\arial.xml" kerning="yes" embed-url="file:D:\D\Projects\BU BSS\QT01_15042_EInvoice\12.REFERENCE\Full Code xmlToHtmlPdf\xml2pdf\fop\arial.ttf">-->
+			<font metrics-url="file:/u01/hddt/EInvoiceGW/fop/arial.xml" kerning="yes" embed-url="file:/u01/hddt/EInvoiceGW/fop/arial.ttf">
+			  <font-triplet name="Arial" style="normal" weight="normal"/>
+			  <font-triplet name="ArialMT" style="normal" weight="normal"/>
+			</font>
+			<!--<font metrics-url="file:/u01/hddt/EInvoiceGW/fop/arialbd.xml" kerning="yes" embed-url="file:/u01/hddt/EInvoiceGW/fop/arialbd.ttf">-->
+			<font metrics-url="file:/u01/hddt/EInvoiceGW/fop/arialbd.xml" kerning="yes" embed-url="file:/u01/hddt/EInvoiceGW/fop/arialbd.ttf">
+			  <font-triplet name="Arial" style="normal" weight="bold"/>
+			  <font-triplet name="ArialMT" style="normal" weight="bold"/>
+			</font>
+			<font metrics-url="file:/u01/hddt/EInvoiceGW/fop/ariali.xml" kerning="yes" embed-url="file:/u01/hddt/EInvoiceGW/fop/ariali.ttf">
+			  <font-triplet name="Arial" style="italic" weight="normal"/>
+			  <font-triplet name="ArialMT" style="italic" weight="normal"/>
+			</font>
+			<font metrics-url="file:/u01/hddt/EInvoiceGW/fop/arialbi.xml" kerning="yes" embed-url="file:/u01/hddt/EInvoiceGW/fop/arialbi.ttf">
+			  <font-triplet name="Arial" style="italic" weight="bold"/>
+			  <font-triplet name="ArialMT" style="italic" weight="bold"/>
+			</font>
+			<font metrics-url="file:/u01/hddt/EInvoiceGW/fop/times.xml" kerning="yes" embed-url="file:/u01/hddt/EInvoiceGW/fop/times.ttf">
+			  <font-triplet name="Times New Roman" style="normal" weight="normal"/>
+			  <font-triplet name="Times New RomanMT" style="normal" weight="normal"/>
+			</font>
+			<font metrics-url="file:/u01/hddt/EInvoiceGW/fop/timesbd.xml" kerning="yes" embed-url="file:/u01/hddt/EInvoiceGW/fop/timesbd.ttf">
+			  <font-triplet name="Times New Roman" style="normal" weight="bold"/>
+			  <font-triplet name="Times New RomanMT" style="normal" weight="bold"/>
+			</font>
+			<font metrics-url="file:/u01/hddt/EInvoiceGW/fop/timesi.xml" kerning="yes" embed-url="file:/u01/hddt/EInvoiceGW/fop/timesi.ttf">
+			  <font-triplet name="Times New Roman" style="italic" weight="normal"/>
+			  <font-triplet name="Times New RomanMT" style="italic" weight="normal"/>
+			</font>
+			<font metrics-url="file:/u01/hddt/EInvoiceGW/fop/timesbi.xml" kerning="yes" embed-url="file:/u01/hddt/EInvoiceGW/fop/timesbi.ttf">
+			  <font-triplet name="Times New Roman" style="italic" weight="bold"/>
+			  <font-triplet name="Times New RomanMT" style="italic" weight="bold"/>
+			</font>
+			<font metrics-url="file:/u01/hddt/EInvoiceGW/fop/msgothic.xml" kerning="yes" embed-url="file:/u01/hddt/EInvoiceGW/fop/msgothic.ttc" >
+				<font-triplet name="Gothic" style="normal" weight="normal"/>
+				<font-triplet name="Gothic" style="normal" weight="bold"/>
+				<font-triplet name="Gothic" style="italic" weight="normal"/>
+				<font-triplet name="Gothic" style="italic" weight="bold"/>
+			 </font>
+         </fonts>
+      </renderer>
+   </renderers>
+</fop>
