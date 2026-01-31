@@ -38,7 +38,7 @@ public class InvoiceMilkSampleService {
         loginParams.put("username", username);
         loginParams.put("password", password);
 
-        String loginUrl = "https://vinvoice.viettel.vn/api/services/einvoiceuaa/api/authenticate";
+        String loginUrl = "https://api-vinvoice.viettel.vn/auth/login";
 
         LinkedHashMap response = (LinkedHashMap) postData(loginUrl, null, loginParams,
                 new TypeReference<LinkedHashMap>() {
@@ -60,10 +60,10 @@ public class InvoiceMilkSampleService {
     /* API tra cứu hóa đơn theo transaction uuid */
     public void searchInvoiceByTransactionUuid() throws Exception {
         InvoiceInputWSDTO.SearchByTransUUIDDTO searchByTransUUIDDTO = new InvoiceInputWSDTO.SearchByTransUUIDDTO();
-        searchByTransUUIDDTO.setSupplierTaxCode("0100109106-504");
+        searchByTransUUIDDTO.setSupplierTaxCode("0100109106-507");
         searchByTransUUIDDTO.setTransactionUuid("4849decf-02a4-435b-8949-3b89b10167df");
         LinkedHashMap object = (LinkedHashMap) postXFormData(
-                "https://vinvoice.viettel.vn/api/services/einvoiceapplication/api/InvoiceAPI/InvoiceWS/searchInvoiceByTransactionUuid",
+                "https://api-vinvoice.viettel.vn/services/einvoiceapplication/api/InvoiceAPI/InvoiceWS/searchInvoiceByTransactionUuid",
                 this.accessToken, searchByTransUUIDDTO, new TypeReference<LinkedHashMap>() {
                 });
         if (object != null && object.containsKey("result")) {
@@ -86,17 +86,19 @@ public class InvoiceMilkSampleService {
     }
 
     /* API tra cứu danh sách hóa đơn theo MST Khách hàng (Nhiệm vụ 2) */
-    public void searchInvoiceByCustomerTaxCode(String buyerTaxCode, String startDate, String endDate) throws Exception {
+    public void searchInvoiceByCustomerTaxCode(String supplierTaxCode, String buyerTaxCode, String startDate,
+            String endDate) throws Exception {
         InvoiceInputWSDTO.GetInvoiceInput input = new InvoiceInputWSDTO.GetInvoiceInput();
+        input.setSupplierTaxCode(supplierTaxCode);
         input.setBuyerTaxCode(buyerTaxCode);
-        input.setStartDate(startDate); // Format: dd/MM/yyyy
-        input.setEndDate(endDate); // Format: dd/MM/yyyy
+        input.setStartDate(startDate);
+        input.setEndDate(endDate);
         input.setRowPerPage(10);
-        input.setPageNum(0);
+        input.setPageNum(1);
 
         // URL API lay danh sach hoa don (Endpoint thuong dung cua Viettel)
-        String url = "https://vinvoice.viettel.vn/api/services/einvoiceapplication/api/InvoiceAPI/InvoiceWS/getInvoices/"
-                + "0100109106-504";
+        String url = "https://api-vinvoice.viettel.vn/services/einvoiceapplication/api/InvoiceAPI/InvoiceUtilsWS/getAllInvoices/"
+                + supplierTaxCode;
 
         InvoiceOutputDTO.SearchInvoiceResp response = (InvoiceOutputDTO.SearchInvoiceResp) postData(url,
                 this.accessToken, input, new TypeReference<InvoiceOutputDTO.SearchInvoiceResp>() {
@@ -105,18 +107,53 @@ public class InvoiceMilkSampleService {
         if (response != null && response.getInvoices() != null) {
             System.out.println("Tim thay " + response.getTotalRows() + " hoa don cho MST: " + buyerTaxCode);
             for (InvoiceOutputDTO.invoicesOutput inv : response.getInvoices()) {
-                System.out.println(" - So HD: " + inv.getInvoiceNo() + " | Ngay: " + inv.getIssueDateStr()
-                        + " | Tong tien: " + inv.getTotal());
+                System.out.println(" - Ky hieu: " + inv.getInvoiceSeri() + " | So HD: " + inv.getInvoiceNo()
+                        + " | Ngay: " + inv.getIssueDateStr()
+                        + " | Tong tien: " + inv.getTotalBeforeTax());
             }
         } else {
             System.out.println("Khong tim thay hoa don nao hoac co loi xay ra.");
         }
     }
 
+    /*
+     * API tra cứu hóa đơn chi tiết (InvoiceUtilsWS/getInvoicesAll) - Link so 1 ban
+     * cung cap
+     */
+    public void searchInvoiceUtilsAll(String supplierTaxCode, String buyerTaxCode, String startDate, String endDate)
+            throws Exception {
+        InvoiceInputWSDTO.GetInvoiceInput input = new InvoiceInputWSDTO.GetInvoiceInput();
+        input.setSupplierTaxCode(supplierTaxCode);
+        input.setBuyerTaxCode(buyerTaxCode);
+        input.setStartDate(startDate);
+        input.setEndDate(endDate);
+        input.setRowPerPage(10);
+        input.setPageNum(1);
+
+        String url = "https://api-vinvoice.viettel.vn/services/einvoiceapplication/api/InvoiceAPI/InvoiceUtilsWS/getInvoicesAll/"
+                + supplierTaxCode;
+
+        InvoiceOutputDTO.InvoiceSearch response = (InvoiceOutputDTO.InvoiceSearch) postData(url,
+                this.accessToken, input, new TypeReference<InvoiceOutputDTO.InvoiceSearch>() {
+                });
+
+        if (response != null && response.getInvoices() != null) {
+            System.out.println("Tim thay (All) " + response.getTotalRows() + " hoa don cho MST: " + buyerTaxCode);
+            for (InvoiceOutputDTO.InvoicesAll inv : response.getInvoices()) {
+                System.out.println(" - Ky hieu: " + inv.getInvoiceSeri() + " | So HD: " + inv.getInvoiceNo()
+                        + " | Ngay: " + inv.getIssueDateStr()
+                        + " | Tong tien: " + inv.getTotalBeforeTax()
+                        + " | File: " + inv.getFileName());
+            }
+        } else {
+            System.out.println("Khong tim thay hoa don (All) nao.");
+        }
+    }
+
     /* API Huy hoa don */
     public void cancelInvoice() throws Exception {
         InvoiceInputWSDTO.CancelTransactionWSDTO cancelTransactionWSDTO = new InvoiceInputWSDTO.CancelTransactionWSDTO();
-        cancelTransactionWSDTO.setSupplierTaxCode("0100109106-504");
+        cancelTransactionWSDTO.setSupplierTaxCode("0100109106-507");
         cancelTransactionWSDTO.setInvoiceNo("K25TII20");
         cancelTransactionWSDTO.setTemplateCode("1/0230");
         cancelTransactionWSDTO.setStrIssueDate(1736818200000l);
@@ -124,7 +161,7 @@ public class InvoiceMilkSampleService {
         cancelTransactionWSDTO.setAdditionalReferenceDate(1587797116000l);
         cancelTransactionWSDTO.setReasonDelete("Ly do xoa bo");
         postXFormData(
-                "https://vinvoice.viettel.vn/api/services/einvoiceapplication/api/InvoiceAPI/InvoiceWS/cancelTransactionInvoice",
+                "https://api-vinvoice.viettel.vn/services/einvoiceapplication/api/InvoiceAPI/InvoiceWS/cancelTransactionInvoice",
                 this.accessToken, cancelTransactionWSDTO, new TypeReference<Object>() {
                 });
     }
@@ -133,32 +170,37 @@ public class InvoiceMilkSampleService {
     // - Tao moi hoa don
     public void createInvoiceGTGT() throws Exception {
         InvoiceInputWSDTO.CreateInvoiceWSDTO invoiceWSDTO = genWSBodyInputNewGTGT();
-        postData("https://vinvoice.viettel.vn/api/services/einvoiceapplication/api/InvoiceAPI/InvoiceWS/createInvoice/"
-                + "0100109106-504", this.accessToken, invoiceWSDTO, new TypeReference<Object>() {
+        Object response = postData(
+                "https://api-vinvoice.viettel.vn/services/einvoiceapplication/api/InvoiceAPI/InvoiceWS/createInvoice/"
+                        + "0100109106-507",
+                this.accessToken, invoiceWSDTO, new TypeReference<Object>() {
                 });
+        if (response != null) {
+            System.out.println("Ket qua tao hoa don: " + new Gson().toJson(response));
+        }
     }
 
     // - Thay the hoa don
     public void createInvoiceReplaceGTGT() throws Exception {
         InvoiceInputWSDTO.CreateInvoiceWSDTO invoiceWSDTO = genWSBodyInputReplaceGTGT();
-        postData("https://vinvoice.viettel.vn/api/services/einvoiceapplication/api/InvoiceAPI/InvoiceWS/createInvoice/"
-                + "0100109106-504", this.accessToken, invoiceWSDTO, new TypeReference<Object>() {
+        postData("https://api-vinvoice.viettel.vn/services/einvoiceapplication/api/InvoiceAPI/InvoiceWS/createInvoice/"
+                + "0100109106-507", this.accessToken, invoiceWSDTO, new TypeReference<Object>() {
                 });
     }
 
     // - Dieu chinh thong tin
     public void createInvoiceAdjustInfoGTGT() throws Exception {
         InvoiceInputWSDTO.CreateInvoiceWSDTO invoiceWSDTO = genWSBodyInputAdjustInfoGTGT();
-        postData("https://vinvoice.viettel.vn/api/services/einvoiceapplication/api/InvoiceAPI/InvoiceWS/createInvoice/"
-                + "0100109106-504", this.accessToken, invoiceWSDTO, new TypeReference<Object>() {
+        postData("https://api-vinvoice.viettel.vn/services/einvoiceapplication/api/InvoiceAPI/InvoiceWS/createInvoice/"
+                + "0100109106-507", this.accessToken, invoiceWSDTO, new TypeReference<Object>() {
                 });
     }
 
     // - Dieu chinh tien
     public void createInvoiceAdjustMoneyGTGT() throws Exception {
         InvoiceInputWSDTO.CreateInvoiceWSDTO invoiceWSDTO = genWSBodyInputAdjustMoneyGTGT();
-        postData("https://vinvoice.viettel.vn/api/services/einvoiceapplication/api/InvoiceAPI/InvoiceWS/createInvoice/"
-                + "0100109106-504", this.accessToken, invoiceWSDTO, new TypeReference<Object>() {
+        postData("https://api-vinvoice.viettel.vn/services/einvoiceapplication/api/InvoiceAPI/InvoiceWS/createInvoice/"
+                + "0100109106-507", this.accessToken, invoiceWSDTO, new TypeReference<Object>() {
                 });
     }
 
@@ -419,11 +461,12 @@ public class InvoiceMilkSampleService {
 
         // Thong tin chung hoa don
         InvoiceInputWSDTO.GeneralInvoiceInfo generalInvoiceInfo = new InvoiceInputWSDTO.GeneralInvoiceInfo();
-        generalInvoiceInfo.setTemplateCode("1/0173");
-        generalInvoiceInfo.setInvoiceSeries("K26TJS");
+        generalInvoiceInfo.setTemplateCode("1/770");
+        generalInvoiceInfo.setInvoiceSeries("K26TXM");
         generalInvoiceInfo.setCurrencyCode("VND");
         generalInvoiceInfo.setAdjustmentType("1");
         generalInvoiceInfo.setPaymentStatus(true);
+        generalInvoiceInfo.setCusGetInvoiceRight(true);
         generalInvoiceInfo.setTransactionUuid(UUID.randomUUID().toString());
         // generalInvoiceInfo.setTypeId(1l);//Nếu phát hành tem vé, truyền id loại vé
         // generalInvoiceInfo.setClassifyId(1l);//Nếu phát hành tem vé, truyền id phân
@@ -432,18 +475,18 @@ public class InvoiceMilkSampleService {
 
         // Thong tin nguoi mua
         InvoiceInputWSDTO.BuyerInfo buyerInfo = new InvoiceInputWSDTO.BuyerInfo();
-        buyerInfo.setBuyerName("Nguyen Van An");
-        buyerInfo.setBuyerLegalName("Cong Ty TNHH ABC");
-        buyerInfo.setBuyerTaxCode("0100109106-990");
-        buyerInfo.setBuyerAddressLine("Duong Le Trong Tan, Ha Dong");
-        buyerInfo.setBuyerPhoneNumber("0912345678");
-        buyerInfo.setBuyerEmail("abc@gmail.com");
-        buyerInfo.setBuyerIdNo("030081002099");
-        buyerInfo.setBuyerIdType("1");
+        buyerInfo.setBuyerName("NGUYEN VAN A TEST API");
+        buyerInfo.setBuyerLegalName("CONG TY THU NGHIEM PHAN MEM");
+        buyerInfo.setBuyerTaxCode("0100109106-507");
+        buyerInfo.setBuyerAddressLine("123 Đường Cách Mạng Tháng 8, Quận 1, TP.HCM");
+        buyerInfo.setBuyerPhoneNumber("0901234567");
+        buyerInfo.setBuyerEmail("test-api@gmail.com");
+        // buyerInfo.setBuyerIdNo("030081002099");
+        // buyerInfo.setBuyerIdType("1");
         buyerInfo.setBuyerCode("NO_CODE");
-        buyerInfo.setBuyerBankName("Ngan Hang TMCP XYZ");
-        buyerInfo.setBuyerBankAccount("000193651773658");
-        buyerInfo.setBuyerNotGetInvoice(1);
+        // buyerInfo.setBuyerBankName("Ngan Hang TMCP XYZ");
+        // buyerInfo.setBuyerBankAccount("000193651773658");
+        buyerInfo.setBuyerNotGetInvoice(0);
         invoiceWSDTO.setBuyerInfo(buyerInfo);
 
         // Hinh thuc thanh toan: Truyền theo đúng hình thức của hóa đơn
@@ -454,20 +497,21 @@ public class InvoiceMilkSampleService {
         // Thong tin hang hoa: Thêm danh sách hàng hóa tương ứng
         List<InvoiceInputWSDTO.ItemInfo> list = new ArrayList<>();
         InvoiceInputWSDTO.ItemInfo itemInfo = new InvoiceInputWSDTO.ItemInfo();
-        itemInfo.setItemCode("HH001");
-        itemInfo.setItemName("May tinh");
-        itemInfo.setUnitName("Chiec");
-        itemInfo.setItemNote("Chi chu hang hoa");
-        itemInfo.setUnitPrice(new BigDecimal(15000000));
+        itemInfo.setLineNumber(1);
+        itemInfo.setItemCode("SP001");
+        itemInfo.setItemName("Sản phẩm Test API Mới 100%");
+        itemInfo.setUnitName("Cái");
+        // itemInfo.setItemNote("Chi chu hang hoa");
+        itemInfo.setUnitPrice(new BigDecimal(50000));
         itemInfo.setQuantity(new BigDecimal(2));
-        itemInfo.setItemTotalAmountWithoutTax(new BigDecimal(30000000));
+        itemInfo.setItemTotalAmountWithoutTax(new BigDecimal(100000));
         itemInfo.setTaxPercentage(new BigDecimal(10));
-        itemInfo.setTaxAmount(new BigDecimal(3000000));
-        itemInfo.setItemTotalAmountWithTax(new BigDecimal(33000000));
-        itemInfo.setItemTotalAmountAfterDiscount(new BigDecimal(0));
-        itemInfo.setDiscount(new BigDecimal(0));
-        itemInfo.setDiscount2(new BigDecimal(0));
-        itemInfo.setItemDiscount(new BigDecimal(0));
+        itemInfo.setTaxAmount(new BigDecimal(10000));
+        itemInfo.setItemTotalAmountWithTax(new BigDecimal(110000));
+        itemInfo.setItemTotalAmountAfterDiscount(new BigDecimal(100000));
+        // itemInfo.setDiscount(new BigDecimal(0));
+        // itemInfo.setDiscount2(new BigDecimal(0));
+        // itemInfo.setItemDiscount(new BigDecimal(0));
         itemInfo.setSelection(1);
         list.add(itemInfo);
         invoiceWSDTO.setItemInfo(list);
@@ -475,8 +519,8 @@ public class InvoiceMilkSampleService {
         // Thong tin thue: Nếu là thuế dòng thì bỏ qua
         InvoiceInputWSDTO.TaxBreakDownsInfo taxInfo = new InvoiceInputWSDTO.TaxBreakDownsInfo();
         taxInfo.setTaxPercentage(new BigDecimal(10));
-        taxInfo.setTaxableAmount(new BigDecimal(30000000));
-        taxInfo.setTaxAmount(new BigDecimal(3000000));
+        taxInfo.setTaxableAmount(new BigDecimal(100000));
+        taxInfo.setTaxAmount(new BigDecimal(10000));
         invoiceWSDTO.setTaxBreakdowns(Collections.singletonList(taxInfo));
 
         // Thong tin bo sung:
@@ -484,19 +528,22 @@ public class InvoiceMilkSampleService {
         // - Nếu có thì thêm theo các thông tin bổ sung của mẫu hóa đơn
         List<InvoiceInputWSDTO.MetaDataInfo> infoUpdateList = new ArrayList<>();
         InvoiceInputWSDTO.MetaDataInfo info = new InvoiceInputWSDTO.MetaDataInfo();
-        info.setStringValue("Thong tin bo sung chuoi");
+        info.setStringValue("Hóa đơn thử nghiệm hệ thống API Viettel");
         info.setKeyTag("invoiceNote");
         info.setValueType("text");
+        info.setKeyLabel("Ghi chú");
         infoUpdateList.add(info);
         invoiceWSDTO.setMetadata(infoUpdateList);
 
         // Tong tien hoa don
         InvoiceInputWSDTO.SummarizeInfo sum = new InvoiceInputWSDTO.SummarizeInfo();
+        sum.setSumOfTotalLineAmountWithoutTax(new BigDecimal(100000));
         sum.setDiscountAmount(new BigDecimal(0));
-        sum.setTotalAmountWithoutTax(new BigDecimal(30000000));
-        sum.setTotalTaxAmount(new BigDecimal(3000000));
-        sum.setTotalAmountWithTax(new BigDecimal(33000000));
-        sum.setTotalAmountAfterDiscount(new BigDecimal(30000000));
+        sum.setTotalAmountWithoutTax(new BigDecimal(100000));
+        sum.setTotalTaxAmount(new BigDecimal(10000));
+        sum.setTotalAmountWithTax(new BigDecimal(110000));
+        sum.setTotalAmountAfterDiscount(new BigDecimal(100000));
+        sum.setTotalAmountWithTaxInWords("Một trăm mười nghìn đồng chẵn");
         invoiceWSDTO.setSummarizeInfo(sum);
 
         return invoiceWSDTO;

@@ -31,6 +31,7 @@ public class InvoiceInputWSDTO implements Serializable {
 
         public BaseDTO() {
         }
+
         public String getSupplierTaxCode() {
             return supplierTaxCode;
         }
@@ -59,6 +60,8 @@ public class InvoiceInputWSDTO implements Serializable {
     @XmlRootElement(name = "getInvoiceInput")
     public static class GetInvoiceInput {
 
+        private String supplierTaxCode;
+
         @Size(min = 7, message = "BAD_REQUEST_INVOICE_NO_MIN_LENGTH")
         @Size(max = 17, message = "BAD_REQUEST_INVOICE_NO_MAX_LENGTH")
         @Pattern(regexp = "^[a-zA-Z0-9/-]*$", message = "BAD_REQUEST_INVOICE_NO_INVALID")
@@ -86,7 +89,7 @@ public class InvoiceInputWSDTO implements Serializable {
         private Integer pageNum;
 
         @Size(max = 20, message = "BAD_REQUEST_BUYER_TAX_CODE_MAX_LENGTH")
-        private String buyerTaxCode; // Long
+        private String buyerTaxCode;
         private String buyerIdNo;
 
         @Size(max = 20, message = "BAD_REQUEST_TEMPLATE_CODE_MAX_LENGTH")
@@ -106,7 +109,13 @@ public class InvoiceInputWSDTO implements Serializable {
         public GetInvoiceInput() {
         }
 
-        ;
+        public String getSupplierTaxCode() {
+            return supplierTaxCode;
+        }
+
+        public void setSupplierTaxCode(String supplierTaxCode) {
+            this.supplierTaxCode = supplierTaxCode;
+        }
 
         public String getInvoiceNo() {
             return invoiceNo;
@@ -307,7 +316,6 @@ public class InvoiceInputWSDTO implements Serializable {
         }
     }
 
-
     @XmlRootElement(name = "commonDataInput")
     public static class CommonDataInput {
 
@@ -411,8 +419,6 @@ public class InvoiceInputWSDTO implements Serializable {
         public CommonDataInput3() {
         }
 
-        ;
-
         public String getSupplierTaxCode() {
             return supplierTaxCode;
         }
@@ -491,7 +497,6 @@ public class InvoiceInputWSDTO implements Serializable {
         @Size(max = 20, message = "BAD_REQUEST_TEMPLATE_CODE_MAX_LENGTH")
         private String templateCode;
         private Long strIssueDate;
-
 
         @Size(max = 2000, message = "BAD_REQUEST_BUYER_EMAIL_MAX_LENGTH")
         private String buyerEmailAddress;
@@ -582,8 +587,6 @@ public class InvoiceInputWSDTO implements Serializable {
         public CancelPaymentWSDTO() {
         }
 
-        ;
-
         public String getSupplierTaxCode() {
             return supplierTaxCode;
         }
@@ -655,7 +658,6 @@ public class InvoiceInputWSDTO implements Serializable {
         public void setBuyerInfo(BuyerInfo buyerInfo) {
             this.buyerInfo = buyerInfo;
         }
-
 
         public SummarizeInfo getSummarizeInfo() {
             return summarizeInfo;
@@ -798,6 +800,8 @@ public class InvoiceInputWSDTO implements Serializable {
         @Size(max = 100, message = "BAD_REQUEST_RESERVATION_CODE_MAX_LENGTH")
         private String reservationCode;
 
+        private Boolean cusGetInvoiceRight;
+
         private Integer validation; // 0: Bỏ validate, khác 0 sẽ validate
         private Long typeId; // 0: Bỏ validate, khác 0 sẽ validate
         private Long classifyId; // 0: Bỏ validate, khác 0 sẽ validate
@@ -805,26 +809,26 @@ public class InvoiceInputWSDTO implements Serializable {
         @Override
         public String toString() {
             return "GeneralInvoiceInfo{" +
-                "invoiceType='" + invoiceType +
-                ", templateCode='" + templateCode +
-                ", invoiceSeries='" + invoiceSeries +
-                ", invoiceIssuedDate=" + invoiceIssuedDate +
-                ", currencyCode='" + currencyCode +
-                ", adjustmentType='" + adjustmentType +
-                ", adjustmentInvoiceType='" + adjustmentInvoiceType +
-                ", originalInvoiceId='" + originalInvoiceId +
-                ", originalInvoiceIssueDate='" + originalInvoiceIssueDate +
-                ", additionalReferenceDesc='" + additionalReferenceDesc +
-                ", additionalReferenceDate=" + additionalReferenceDate +
-                ", paymentStatus=" + paymentStatus +
-                ", exchangeRate=" + exchangeRate +
-                ", transactionUuid='" + transactionUuid +
-                ", userName='" + userName +
-                ", certificateSerial='" + certificateSerial +
-                ", transactionId='" + transactionId +
-                ", invoiceNote='" + invoiceNote +
-                ", validation='" + validation +
-                '}';
+                    "invoiceType='" + invoiceType +
+                    ", templateCode='" + templateCode +
+                    ", invoiceSeries='" + invoiceSeries +
+                    ", invoiceIssuedDate=" + invoiceIssuedDate +
+                    ", currencyCode='" + currencyCode +
+                    ", adjustmentType='" + adjustmentType +
+                    ", adjustmentInvoiceType='" + adjustmentInvoiceType +
+                    ", originalInvoiceId='" + originalInvoiceId +
+                    ", originalInvoiceIssueDate='" + originalInvoiceIssueDate +
+                    ", additionalReferenceDesc='" + additionalReferenceDesc +
+                    ", additionalReferenceDate=" + additionalReferenceDate +
+                    ", paymentStatus=" + paymentStatus +
+                    ", exchangeRate=" + exchangeRate +
+                    ", transactionUuid='" + transactionUuid +
+                    ", userName='" + userName +
+                    ", certificateSerial='" + certificateSerial +
+                    ", transactionId='" + transactionId +
+                    ", invoiceNote='" + invoiceNote +
+                    ", validation='" + validation +
+                    '}';
         }
 
         public GeneralInvoiceInfo() {
@@ -1014,6 +1018,14 @@ public class InvoiceInputWSDTO implements Serializable {
             this.reservationCode = reservationCode;
         }
 
+        public Boolean getCusGetInvoiceRight() {
+            return cusGetInvoiceRight;
+        }
+
+        public void setCusGetInvoiceRight(Boolean cusGetInvoiceRight) {
+            this.cusGetInvoiceRight = cusGetInvoiceRight;
+        }
+
         public Integer getValidation() {
             return validation;
         }
@@ -1091,22 +1103,22 @@ public class InvoiceInputWSDTO implements Serializable {
         @Override
         public String toString() {
             return "SellerInfo{" +
-                "sellerLegalName='" + sellerLegalName +
-                ", sellerTaxCode='" + sellerTaxCode +
-                ", sellerAddressLine='" + sellerAddressLine +
-                ", sellerPhoneNumber='" + sellerPhoneNumber +
-                ", sellerFaxNumber='" + sellerFaxNumber +
-                ", sellerEmail='" + sellerEmail +
-                ", sellerBankName='" + sellerBankName +
-                ", sellerBankAccount='" + sellerBankAccount +
-                ", sellerDistrictName='" + sellerDistrictName +
-                ", sellerCityName='" + sellerCityName +
-                ", sellerCountryCode='" + sellerCountryCode +
-                ", sellerWebsite='" + sellerWebsite +
-                ", merchantCode='" + merchantCode +
-                ", merchantName='" + merchantName +
-                ", merchantCity='" + merchantCity +
-                '}';
+                    "sellerLegalName='" + sellerLegalName +
+                    ", sellerTaxCode='" + sellerTaxCode +
+                    ", sellerAddressLine='" + sellerAddressLine +
+                    ", sellerPhoneNumber='" + sellerPhoneNumber +
+                    ", sellerFaxNumber='" + sellerFaxNumber +
+                    ", sellerEmail='" + sellerEmail +
+                    ", sellerBankName='" + sellerBankName +
+                    ", sellerBankAccount='" + sellerBankAccount +
+                    ", sellerDistrictName='" + sellerDistrictName +
+                    ", sellerCityName='" + sellerCityName +
+                    ", sellerCountryCode='" + sellerCountryCode +
+                    ", sellerWebsite='" + sellerWebsite +
+                    ", merchantCode='" + merchantCode +
+                    ", merchantName='" + merchantName +
+                    ", merchantCity='" + merchantCity +
+                    '}';
         }
 
         public String getMerchantCode() {
@@ -1251,10 +1263,10 @@ public class InvoiceInputWSDTO implements Serializable {
         @Pattern(regexp = "[0-9+()&; -]*", message = "BAD_REQUEST_BUYER_PHONE_INVALID")
         private String buyerPhoneNumber;
 
-        //Hệ thống không check
+        // Hệ thống không check
         private String buyerFaxNumber;
 
-        //Được phép nhập nhiều email, mỗi email cách nhau bởi dấu ;
+        // Được phép nhập nhiều email, mỗi email cách nhau bởi dấu ;
         @Size(max = 2000, message = "BAD_REQUEST_BUYER_EMAIL_MAX_LENGTH")
         private String buyerEmail;
 
@@ -1274,20 +1286,20 @@ public class InvoiceInputWSDTO implements Serializable {
         @Override
         public String toString() {
             return "BuyerInfo{" +
-                "buyerName='" + buyerName +
-                ", buyerCode='" + buyerCode +
-                ", buyerLegalName='" + buyerLegalName +
-                ", buyerTaxCode='" + buyerTaxCode +
-                ", buyerAddressLine='" + buyerAddressLine +
-                ", buyerPhoneNumber='" + buyerPhoneNumber +
-                ", buyerFaxNumber='" + buyerFaxNumber +
-                ", buyerEmail='" + buyerEmail +
-                ", buyerBankName='" + buyerBankName +
-                ", buyerBankAccount='" + buyerBankAccount +
-                ", buyerIdType='" + buyerIdType +
-                ", buyerIdNo='" + buyerIdNo +
-                ", buyerNotGetInvoice=" + buyerNotGetInvoice +
-                '}';
+                    "buyerName='" + buyerName +
+                    ", buyerCode='" + buyerCode +
+                    ", buyerLegalName='" + buyerLegalName +
+                    ", buyerTaxCode='" + buyerTaxCode +
+                    ", buyerAddressLine='" + buyerAddressLine +
+                    ", buyerPhoneNumber='" + buyerPhoneNumber +
+                    ", buyerFaxNumber='" + buyerFaxNumber +
+                    ", buyerEmail='" + buyerEmail +
+                    ", buyerBankName='" + buyerBankName +
+                    ", buyerBankAccount='" + buyerBankAccount +
+                    ", buyerIdType='" + buyerIdType +
+                    ", buyerIdNo='" + buyerIdNo +
+                    ", buyerNotGetInvoice=" + buyerNotGetInvoice +
+                    '}';
         }
 
         public BuyerInfo() {
@@ -1417,16 +1429,18 @@ public class InvoiceInputWSDTO implements Serializable {
         @Override
         public String toString() {
             return "PaymentInfo{" +
-                "paymentMethodName='" + paymentMethodName +
-                ", paymentMethod='" + paymentMethod +
-                '}';
+                    "paymentMethodName='" + paymentMethodName +
+                    ", paymentMethod='" + paymentMethod +
+                    '}';
         }
 
         public PaymentInfo() {
         }
+
         public PaymentInfo(String paymentMethodName) {
             this.paymentMethodName = paymentMethodName;
         }
+
         public String getPaymentMethodName() {
             return paymentMethodName;
         }
@@ -1444,12 +1458,13 @@ public class InvoiceInputWSDTO implements Serializable {
         }
     }
 
-
     public static class ItemInfo {
 
         @Min(value = 1, message = "BAD_REQUEST_ITEM_SELECTION_INVALID")
         @Max(value = 6, message = "BAD_REQUEST_ITEM_SELECTION_INVALID")
         private Integer selection; // maxlength 1
+
+        private Integer lineNumber;
 
         private String itemCode;
 
@@ -1492,12 +1507,21 @@ public class InvoiceInputWSDTO implements Serializable {
 
         public ItemInfo() {
         }
+
         public Integer getSelection() {
             return selection;
         }
 
         public void setSelection(Integer selection) {
             this.selection = selection;
+        }
+
+        public Integer getLineNumber() {
+            return lineNumber;
+        }
+
+        public void setLineNumber(Integer lineNumber) {
+            this.lineNumber = lineNumber;
         }
 
         public String getItemCode() {
@@ -1653,9 +1677,7 @@ public class InvoiceInputWSDTO implements Serializable {
         }
     }
 
-
     public static class TaxBreakDownsInfo {
-
 
         private BigDecimal taxPercentage; // maxlength 13
 
@@ -1665,6 +1687,7 @@ public class InvoiceInputWSDTO implements Serializable {
 
         public TaxBreakDownsInfo() {
         }
+
         public BigDecimal getTaxPercentage() {
             return taxPercentage;
         }
@@ -1692,6 +1715,7 @@ public class InvoiceInputWSDTO implements Serializable {
 
     public static class SummarizeInfo {
 
+        private BigDecimal sumOfTotalLineAmountWithoutTax;
         private BigDecimal totalAmountWithoutTax; // maxlength 15
         private BigDecimal totalTaxAmount; // maxlength 13
         private BigDecimal totalAmountWithTax; // maxlength 13
@@ -1709,6 +1733,14 @@ public class InvoiceInputWSDTO implements Serializable {
         public SummarizeInfo() {
         }
 
+        public BigDecimal getSumOfTotalLineAmountWithoutTax() {
+            return sumOfTotalLineAmountWithoutTax;
+        }
+
+        public void setSumOfTotalLineAmountWithoutTax(BigDecimal sumOfTotalLineAmountWithoutTax) {
+            this.sumOfTotalLineAmountWithoutTax = sumOfTotalLineAmountWithoutTax;
+        }
+
         public BigDecimal getSettlementDiscountAmount() {
             return settlementDiscountAmount;
         }
@@ -1724,7 +1756,6 @@ public class InvoiceInputWSDTO implements Serializable {
         public void setTotalAmountWithoutTax(BigDecimal totalAmountWithoutTax) {
             this.totalAmountWithoutTax = totalAmountWithoutTax;
         }
-
 
         public BigDecimal getDiscountAmount() {
             return discountAmount;
@@ -1783,7 +1814,6 @@ public class InvoiceInputWSDTO implements Serializable {
         }
     }
 
-
     public static class MetaDataInfo {
 
         private String keyTag;
@@ -1803,6 +1833,7 @@ public class InvoiceInputWSDTO implements Serializable {
 
         public MetaDataInfo() {
         }
+
         public String getKeyTag() {
             return keyTag;
         }
@@ -1885,12 +1916,9 @@ public class InvoiceInputWSDTO implements Serializable {
         @Size(max = 50, message = "BAD_REQUEST_PRODUCT_NAME_MAX_LENGTH")
         private String productName;
 
-
         private BigDecimal qtyLog;
 
-
         private BigDecimal priceLog;
-
 
         private BigDecimal thanhTienLog;
 
@@ -2001,6 +2029,7 @@ public class InvoiceInputWSDTO implements Serializable {
             this.noteLog = noteLog;
         }
     }
+
     public static class MeterReadingInfo {
 
         private String previousIndex;
@@ -2015,6 +2044,7 @@ public class InvoiceInputWSDTO implements Serializable {
 
         public MeterReadingInfo() {
         }
+
         public String getPreviousIndex() {
             return previousIndex;
         }
@@ -2423,7 +2453,6 @@ public class InvoiceInputWSDTO implements Serializable {
         @Size(max = 200, message = "BAD_REQUEST_TEMPOS_TYPE_OVER_LENGTH")
         private String temposType;
 
-
         public Integer getTotalScan() {
             return totalScan;
         }
@@ -2467,11 +2496,11 @@ public class InvoiceInputWSDTO implements Serializable {
         @Override
         public String toString() {
             return "QrCodeInfo{" +
-                "totalScan=" + totalScan +
-                ", remainScan=" + remainScan +
-                ", startDateQrcode=" + startDateQrcode +
-                ", endDateQrcode=" + endDateQrcode +
-                '}';
+                    "totalScan=" + totalScan +
+                    ", remainScan=" + remainScan +
+                    ", startDateQrcode=" + startDateQrcode +
+                    ", endDateQrcode=" + endDateQrcode +
+                    '}';
         }
     }
 
@@ -2522,6 +2551,7 @@ public class InvoiceInputWSDTO implements Serializable {
             this.printStatus = printStatus;
         }
     }
+
     public static class CreateExchangeInvoiceFileWSV1DTO {
 
         @NotNull(message = "BAD_REQUEST_TAX_CODE_REQUIRED")
@@ -2552,7 +2582,6 @@ public class InvoiceInputWSDTO implements Serializable {
 
         public CreateExchangeInvoiceFileWSV1DTO() {
         }
-
 
         public String getSupplierTaxCode() {
             return supplierTaxCode;
@@ -2616,6 +2645,7 @@ public class InvoiceInputWSDTO implements Serializable {
 
         public CancelPaymentWSV1DTO() {
         }
+
         public String getSupplierTaxCode() {
             return supplierTaxCode;
         }

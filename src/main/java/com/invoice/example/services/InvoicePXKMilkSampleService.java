@@ -36,32 +36,32 @@ public class InvoicePXKMilkSampleService {
     // - Tao moi hoa don
     public void createInvoicePXK() throws Exception {
         InvoiceInputWSDTO.CreateInvoiceWSDTO invoiceWSDTO = genWSBodyInputNewPXK();
-        postData("https://vinvoice.viettel.vn/api/services/einvoiceapplication/api/InvoiceAPI/InvoiceWS/createInvoice/"
-                + "0100109106-504", this.accessToken, invoiceWSDTO, new TypeReference<Object>() {
+        postData("https://api-vinvoice.viettel.vn/services/einvoiceapplication/api/InvoiceAPI/InvoiceWS/createInvoice/"
+                + "0100109106-507", this.accessToken, invoiceWSDTO, new TypeReference<Object>() {
                 });
     }
 
     // - Thay the hoa don
     public void createInvoiceReplacePXK() throws Exception {
         InvoiceInputWSDTO.CreateInvoiceWSDTO invoiceWSDTO = genWSBodyInputReplacePXK();
-        postData("https://vinvoice.viettel.vn/api/services/einvoiceapplication/api/InvoiceAPI/InvoiceWS/createInvoice/"
-                + "0100109106-504", this.accessToken, invoiceWSDTO, new TypeReference<Object>() {
+        postData("https://api-vinvoice.viettel.vn/services/einvoiceapplication/api/InvoiceAPI/InvoiceWS/createInvoice/"
+                + "0100109106-507", this.accessToken, invoiceWSDTO, new TypeReference<Object>() {
                 });
     }
 
     // - Dieu chinh thong tin
     public void createInvoiceAdjustInfoPXK() throws Exception {
         InvoiceInputWSDTO.CreateInvoiceWSDTO invoiceWSDTO = genWSBodyInputAdjustInfoPXK();
-        postData("https://vinvoice.viettel.vn/api/services/einvoiceapplication/api/InvoiceAPI/InvoiceWS/createInvoice/"
-                + "0100109106-504", this.accessToken, invoiceWSDTO, new TypeReference<Object>() {
+        postData("https://api-vinvoice.viettel.vn/services/einvoiceapplication/api/InvoiceAPI/InvoiceWS/createInvoice/"
+                + "0100109106-507", this.accessToken, invoiceWSDTO, new TypeReference<Object>() {
                 });
     }
 
     // - Dieu chinh tien
     public void createInvoiceAdjustMoneyPXK() throws Exception {
         InvoiceInputWSDTO.CreateInvoiceWSDTO invoiceWSDTO = genWSBodyInputAdjustMoneyPXK();
-        postData("https://vinvoice.viettel.vn/api/services/einvoiceapplication/api/InvoiceAPI/InvoiceWS/createInvoice/"
-                + "0100109106-504", this.accessToken, invoiceWSDTO, new TypeReference<Object>() {
+        postData("https://api-vinvoice.viettel.vn/services/einvoiceapplication/api/InvoiceAPI/InvoiceWS/createInvoice/"
+                + "0100109106-507", this.accessToken, invoiceWSDTO, new TypeReference<Object>() {
                 });
     }
 

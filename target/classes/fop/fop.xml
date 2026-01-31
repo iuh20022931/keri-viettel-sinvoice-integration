@@ -1,0 +1,67 @@
+<fop version="1.0">
+   <!--Base URL for resolving relative URLs-->
+   <!-- Base URL for resolving relative URLs -->
+   <base>./</base>
+   <!-- Font Base URL for resolving relative font URLs -->
+   <font-base>./</font-base>
+   <strict-validation>false</strict-validation>
+   <!--Source resolution in dpi (dots/pixels per inch) for determining the size of pixels in SVG and bitmap images, default: 72dpi-->
+   <source-resolution>72</source-resolution>
+   <!--Target resolution in dpi (dots/pixels per inch) for specifying the target resolution for generated bitmaps, default: 72dpi-->
+   <target-resolution>72</target-resolution>
+   <!--Default page-height and page-width, in case value is specified as auto-->
+   <default-page-settings height="11.00in" width="8.50in"/>
+   <!--Information for specific renderers-->
+   <!--Uses renderer mime type for renderers-->
+   <renderers>
+      <renderer mime="application/pdf">
+        <filterList>
+            <!--provides compression using zlib flate (default is on)-->
+            <value>flate</value>
+        </filterList>
+        <fonts>
+			<font metrics-url="arial.xml" kerning="yes" embed-url="arial.ttf">
+			  <font-triplet name="Arial" style="normal" weight="normal"/>
+			  <font-triplet name="ArialMT" style="normal" weight="normal"/>
+			</font>
+			<font metrics-url="arialbd.xml" kerning="yes" embed-url="arialbd.ttf">
+			  <font-triplet name="Arial" style="normal" weight="bold"/>
+			  <font-triplet name="ArialMT" style="normal" weight="bold"/>
+			</font>
+			<font metrics-url="ariali.xml" kerning="yes" embed-url="ariali.ttf">
+			  <font-triplet name="Arial" style="italic" weight="normal"/>
+			  <font-triplet name="ArialMT" style="italic" weight="normal"/>
+			</font>
+			<font metrics-url="arialbi.xml" kerning="yes" embed-url="arialbi.ttf">
+			  <font-triplet name="Arial" style="italic" weight="bold"/>
+			  <font-triplet name="ArialMT" style="italic" weight="bold"/>
+			</font>
+			<font metrics-url="times.xml" kerning="yes" embed-url="times.ttf">
+			  <font-triplet name="Times New Roman" style="normal" weight="normal"/>
+			  <font-triplet name="Times New RomanMT" style="normal" weight="normal"/>
+			</font>
+			<font metrics-url="timesbd.xml" kerning="yes" embed-url="timesbd.ttf">
+			  <font-triplet name="Times New Roman" style="normal" weight="bold"/>
+			  <font-triplet name="Times New RomanMT" style="normal" weight="bold"/>
+			</font>
+			<font metrics-url="timesi.xml" kerning="yes" embed-url="timesi.ttf">
+			  <font-triplet name="Times New Roman" style="italic" weight="normal"/>
+			  <font-triplet name="Times New RomanMT" style="italic" weight="normal"/>
+			</font>
+			<font metrics-url="timesbi.xml" kerning="yes" embed-url="timesbi.ttf">
+			  <font-triplet name="Times New Roman" style="italic" weight="bold"/>
+			  <font-triplet name="Times New RomanMT" style="italic" weight="bold"/>
+			</font>
+			<font metrics-url="msgothic.xml" kerning="yes" embed-url="msgothic.ttc" >
+				<font-triplet name="Gothic" style="normal" weight="normal"/>
+			 </font>
+			 <font metrics-url="tahoma.xml" kerning="yes" embed-url="tahoma_0.ttf" >
+				<font-triplet name="Tahoma" style="normal" weight="normal"/>
+			 </font>
+			  <font metrics-url="tahomabd.xml" kerning="yes" embed-url="tahomabd_0.ttf" >
+				<font-triplet name="Tahoma" style="normal" weight="bold"/>
+			 </font>
+         </fonts>
+      </renderer>
+   </renderers>
+</fop>

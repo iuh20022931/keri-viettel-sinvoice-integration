@@ -13,15 +13,15 @@ public class Main {
             // Bọc try-catch để nếu login lỗi mạng/server thì vẫn chạy tiếp xuống phần dùng
             // token thủ công
             try {
-                token = invoiceSampleService.login("0100109106-504", "2wsxCDE#");
+                token = invoiceSampleService.login("0100109106-507", "2wsxCDE#");
             } catch (Exception e) {
                 System.out.println("Login tu dong gap loi (se dung token thu cong): " + e.getMessage());
             }
 
             if (token == null) {
                 System.out.println("Login that bai/Loi. Su dung token thu cong...");
-                // Token ban vua cung cap (het han luc ~05:15 30/01/2026)
-                token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIwMTAwMTA5MTA2LTUwNCIsInNjb3BlIjpbIm9wZW5pZCJdLCJleHAiOjE3Njk3NTAxMDcsInR5cGUiOjEsImlhdCI6MTc2OTc0ODkwNywiaW52b2ljZV9jbHVzdGVyIjoiY2x1c3RlcjUiLCJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiXSwianRpIjoiYjkxMWUxMjUtMDg3ZC00NmY5LWFhYWYtNTZkY2YwNzBlZWFkIiwiY2xpZW50X2lkIjoid2ViX2FwcCJ9.GVoNUtamZTXNpN0nwy2Bqw55P9yGYu8Wxj1FmY55941gjmxLcY5INtcctl46iNMd3g9Q1ysxY02fVb6dyxytxI3i-i2MTWoPBnK38p4YwUM4zWk3feIOVkG4-qN96jHwYQtnByHCBk4PSCKEst48CseEN-CeV3XMUNvAenIM4VTKmizLNjNspRNE8U3XngTOS1N04axKUNWIMz3AcgszpKgn0jzTy4qz2ezJk3aIoPW1Yqos2JsCpamocYc-zXxoXWIpwPtWiNpyjoSa8OA0Hear2HgqGE1l8tcEHaNptEh36glVPVnwprHuEgDd3IbKSv1yaj5Hu3UMtk7kxvMSoQ";
+                // Token moi cap nhat (MST 0100109106-507)
+                token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIwMTAwMTA5MTA2LTUwNyIsInNjb3BlIjpbIm9wZW5pZCJdLCJleHAiOjE3Njk4Mjc1NDQsInR5cGUiOjEsImlhdCI6MTc2OTgyNjM0NCwiaW52b2ljZV9jbHVzdGVyIjoiY2x1c3RlcjciLCJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiXSwianRpIjoiNmY5NTI1ZDAtNzU1NC00Yjc5LWJiMGEtZGNlMjQ4NzQxZWEzIiwiY2xpZW50X2lkIjoid2ViX2FwcCJ9.dPiKuanbwUucyJGFgVDOofmucWBG018Zd0GxTBb-whqyZLjZT4uWOudD6i2xjxuQQJ7jAEa0eMAFsnSK1F1FefJgspKmKLBjZ2gkBJ6NMn90ySMvGpU17yVBoFIYy6qWqvuLHKoVOhJU3mZ8MWIcbjCAFwSJf4BAQp8w-qwLAEdZ1Wc_DjSVNGpJwf4pD-ZjxtUn8yhRiglmVfgtYFBm3I8nkjySNSy57xRGpaiIE4RUMq4MrqHWXNUNTmGHNQRgf30PVRMDFnckBJLNGVZ3pr0ST3JqxZ4KoZrMuBbOM1LRKBOzboJK4zjvfv_-XRbaKcxtSQ3eFRWfDqXvsd_ksg";
                 invoiceSampleService.setAccessToken(token);
             }
 
@@ -33,6 +33,7 @@ public class Main {
             // --- NHIEM VU 1: XUAT HOA DON (CREATE INVOICE) ---
             System.out.println("--- TASK 1: Create Invoice GTGT ---");
             invoiceSampleService.createInvoiceGTGT();
+            System.out.println("✅ TASK 1: XUAT HOA DON THANH CONG!");
 
             // (Optional) Tao Phieu Xuat Kho neu can
             // System.out.println("--- TASK 1 (Extra): Create Invoice PXK ---");
@@ -40,8 +41,16 @@ public class Main {
 
             // --- NHIEM VU 2: GOM HOA DON THEO MST (SEARCH INVOICE) ---
             System.out.println("--- TASK 2: Search Invoice By MST ---");
-            // Tim hoa don cua khach hang co MST 0100109106-990 tu ngay 01/01/2025 den nay
-            invoiceSampleService.searchInvoiceByCustomerTaxCode("0100109106-990", "01/01/2025", "30/01/2026");
+            // Tim hoa don cua khach hang co MST 0100109106-507 tu ngay 01/01/2026 den nay
+            // Tham so: MST Nguoi Ban, MST Nguoi Mua, Tu Ngay, Den Ngay
+            invoiceSampleService.searchInvoiceByCustomerTaxCode("0100109106-507", "0100109106-507", "2026-01-01",
+                    "2026-01-31");
+            System.out.println("✅ TASK 2: TRA CUU HOA DON THANH CONG!");
+
+            System.out.println("--- TASK 2 (Advanced): Search Invoice Utils All (Link 1) ---");
+            // Su dung API getInvoicesAll de lay them thong tin file va chi tiet
+            invoiceSampleService.searchInvoiceUtilsAll("0100109106-507", "0100109106-507", "2026-01-01", "2026-01-31");
+            System.out.println("✅ TASK 2 (Advanced): TRA CUU CHI TIET THANH CONG!");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
